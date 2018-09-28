@@ -42,13 +42,19 @@ define([
     $('[data-toggle="popover"]').popover();
   });
   
-  //for AGOL - www.arcgis.com; for ArcGIS Enterprise use portal hostname / webadaptor
-  var shortPortalUrl = 'www.arcgis.com';
-  
   var urlObjects = urlUtils.urlToObject(location.href);
+  
+  //for AGOL use www.arcgis.com; for ArcGIS Enterprise use portal hostname / webadaptor
+  var shortPortalUrl = 'https://www.arcgis.com';
+  var portalUrl;
+  
+  if (shortPortalUrl.match(/.arcgis.com/)) {
+    portalUrl = shortPortalUrl;
+  } else {
+    portalUrl = shortPortalUrl + '/sharing/rest';
+  }
 
-   var portalUrl = shortPortalUrl + '/sharing/rest';
-   var itemid;
+  var itemid;
   if (urlObjects.query) {
     portalUrl = urlObjects.query.portal || portalUrl;
     itemid = urlObjects.query.itemid;
@@ -59,7 +65,7 @@ define([
   var info = new OAuthInfo({
     //update appID after registering app with portal
     appId: 'eELUS9Vvk8xP3Kkg',
-    portalUrl: 'https://' + portalUrl,
+    portalUrl,
     popup: false
   });
 
