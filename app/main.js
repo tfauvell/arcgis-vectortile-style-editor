@@ -41,10 +41,13 @@ define([
     $('#main-container').splitPane();
     $('[data-toggle="popover"]').popover();
   });
-
+  
+  //for AGOL - www.arcgis.com; for ArcGIS Enterprise use portal hostname / webadaptor
+  var shortPortalUrl = 'www.arcgis.com';
+  
   var urlObjects = urlUtils.urlToObject(location.href);
 
-   var portalUrl = 'www.arcgis.com';
+   var portalUrl = shortPortalUrl + '/sharing/rest';
    var itemid;
   if (urlObjects.query) {
     portalUrl = urlObjects.query.portal || portalUrl;
@@ -54,8 +57,9 @@ define([
   esriConfig.defaults.io.corsEnabledServers.push(portalUrl);
 
   var info = new OAuthInfo({
+    //update appID after registering app with portal
     appId: 'eELUS9Vvk8xP3Kkg',
-    portalUrl: 'http://' + portalUrl,
+    portalUrl: 'https://' + portalUrl,
     popup: false
   });
 
@@ -85,7 +89,7 @@ define([
 
       domUtils.show(signoutBtn);
       if (itemid) {
-        initStyleEditor(portalUrl, itemid);
+        initStyleEditor(shortPortalUrl, itemid);
       } else {
         portal.queryItems({
           q: '(type:"Vector Tile Service", owner:"' + user.userId + '") AND NOT typekeywords:"Hosted"',
@@ -100,7 +104,7 @@ define([
               e.preventDefault();
               var id = e.target.getAttribute('data-itemid');
               if (id) {
-                initStyleEditor(portalUrl, id);
+                initStyleEditor(shortPortalUrl, id);
               }
             });
           } else {
