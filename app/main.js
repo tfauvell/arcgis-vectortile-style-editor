@@ -65,7 +65,7 @@ define([
   var info = new OAuthInfo({
     //update appID after registering app with portal
     appId: 'eELUS9Vvk8xP3Kkg',
-    portalUrl,
+    portalUrl: portalUrl,
     popup: false
   });
 
